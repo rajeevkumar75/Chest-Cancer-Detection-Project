@@ -7,3 +7,4 @@ logs/
 Notebook/
 artifacts/data_ingestion/*
 artifacts/prepare_base_model/*
+src/cnnClassifier.egg-info/*
