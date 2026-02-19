@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 import os
 import datetime
+from pathlib import Path
 
 # --- Page Config & Professional Styling ---
 st.set_page_config(page_title="Adenocarcinoma Detection AI", layout="wide")
@@ -51,12 +52,17 @@ if 'history' not in st.session_state:
     st.session_state.history = []
 
 # --- Model Loading ---
-MODEL_PATH = r"artifacts\trained_model\model.h5"
+_APP_DIR = Path(__file__).resolve().parent
+# If this file lives in `templates/`, project root is its parent.
+_PROJECT_ROOT = _APP_DIR.parent if _APP_DIR.name.lower() == "templates" else _APP_DIR
+MODEL_PATH = _PROJECT_ROOT / "artifacts" / "trained_model" / "model.h5"
 
 @st.cache_resource
 def load_trained_model():
-    if os.path.exists(MODEL_PATH):
-        return tf.keras.models.load_model(MODEL_PATH)
+    if MODEL_PATH.exists():
+        # compile=False avoids restoring any training state and suppresses
+        # "compiled metrics have yet to be built" warnings for inference-only use.
+        return tf.keras.models.load_model(str(MODEL_PATH), compile=False)
     return None
 
 model = load_trained_model()
