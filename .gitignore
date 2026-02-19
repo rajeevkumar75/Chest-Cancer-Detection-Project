@@ -7,5 +7,10 @@ __pycache__/
 logs/
 Notebook/
 artifacts/data_ingestion/*
-artifacts/prepare_base_model/
+artifacts/prepare_base_model/*
 src/cnnClassifier.egg-info/*
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
