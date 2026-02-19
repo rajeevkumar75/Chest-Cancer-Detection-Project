@@ -1,4 +1,5 @@
 venv/
+.venv/
 __pycache__/
 *.pyc
 .DS_Store
@@ -6,5 +7,5 @@ __pycache__/
 logs/
 Notebook/
 artifacts/data_ingestion/*
-artifacts/prepare_base_model/*
+artifacts/prepare_base_model/
 src/cnnClassifier.egg-info/*

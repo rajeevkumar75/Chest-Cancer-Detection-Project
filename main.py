@@ -1,3 +1,5 @@
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 from cnnClassifier import logger
 from cnnClassifier.pipeline.data_ingestion import DataIngestionTrainingPipeline
 from cnnClassifier.pipeline.prepare_model import PrepareBaseModelTrainingPipeline

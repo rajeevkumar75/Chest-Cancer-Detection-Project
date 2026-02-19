@@ -7,6 +7,7 @@ src/cnnClassifier.egg-info/dependency_links.txt
 src/cnnClassifier.egg-info/top_level.txt
 src/cnnClassifier/components/__init__.py
 src/cnnClassifier/components/data_ingestion.py
+src/cnnClassifier/components/model_trainer.py
 src/cnnClassifier/components/prepare_base_model.py
 src/cnnClassifier/config/__init__.py
 src/cnnClassifier/config/configuration.py
@@ -15,6 +16,7 @@ src/cnnClassifier/entity/__init__.py
 src/cnnClassifier/entity/config_entity.py
 src/cnnClassifier/pipeline/__init__.py
 src/cnnClassifier/pipeline/data_ingestion.py
+src/cnnClassifier/pipeline/model_trainer.py
 src/cnnClassifier/pipeline/prepare_model.py
 src/cnnClassifier/utils/__init__.py
 src/cnnClassifier/utils/common.py
