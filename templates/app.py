@@ -67,6 +67,27 @@ def load_trained_model():
 
 model = load_trained_model()
 
+def is_likely_chest_ct(img: Image.Image) -> bool:
+    """
+    Lightweight heuristic to catch obviously wrong uploads.
+    Returns False for very small, colorful, or non‑radiology‑like images.
+    """
+    # Basic size check
+    w, h = img.size
+    if w < 128 or h < 128:
+        return False
+
+    # Convert to RGB np array
+    arr = np.asarray(img.convert("RGB"), dtype=np.float32)
+    # Many CT/X‑ray images are near‑grayscale. Measure color channel disagreement.
+    r, g, b = arr[..., 0], arr[..., 1], arr[..., 2]
+    color_diff = (np.abs(r - g) + np.abs(g - b) + np.abs(b - r)) / 3.0
+    mean_color_diff = float(color_diff.mean())
+
+    # If colors are very different between channels, it's probably a natural image.
+    # Threshold chosen empirically for 0‑255 range.
+    return mean_color_diff < 15.0
+
 # --- Sidebar: Metadata & History ---
 with st.sidebar:
     st.title("📂 Diagnostic Info")
@@ -114,6 +135,13 @@ with col1:
     if uploaded_file:
         image = Image.open(uploaded_file).convert('RGB')
         container.image(image, caption="Analyzable Medical Surface", use_container_width=True)
+
+        # Basic safeguard against non‑chest, non‑medical images
+        if not is_likely_chest_ct(image):
+            st.warning(
+                "The uploaded image does **not** appear to be a typical chest CT/X‑ray. "
+                "Predictions may be unreliable. Please upload a proper medical chest scan."
+            )
         
         # Update Metadata in Sidebar
         meta_placeholder.markdown(f"""
@@ -130,6 +158,14 @@ with col2:
     
     if uploaded_file and model:
         if st.button("RUN DIAGNOSTIC ANALYSIS"):
+            # Final safety check before running the model
+            if not is_likely_chest_ct(image):
+                st.error(
+                    "Analysis stopped: the image doesn't look like a chest CT/X‑ray. "
+                    "Please upload a relevant chest scan for accurate prediction."
+                )
+                st.stop()
+
             with st.spinner("Analyzing Voxel Patterns..."):
                 # Preprocessing
                 img = image.resize((224, 224)) 
