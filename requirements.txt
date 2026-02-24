@@ -3,7 +3,8 @@ pandas
 scikit-learn
 scipy
 joblib
-tensorflow
+tensorflow==2.15.0
+keras==2.15.0
 streamlit
 matplotlib
 seaborn
